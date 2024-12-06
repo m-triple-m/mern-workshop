@@ -64,7 +64,7 @@ const App = () => {
     const file = e.target.files[0];
     const fd = new FormData();
     fd.append("myfile", file);
-    fetch("http://localhost:5000/uploadfile", {
+    fetch("https://mern-workshop.onrender.com/uploadfile", {
       method: "POST",
       body: fd,
     }).then((res) => {
@@ -77,7 +77,11 @@ const App = () => {
     });
   };
 
-  const run = async () => {
+  const run = async (imageData) => {
+    const {
+      uri,
+      mimeType,
+    } = imageData;
     // TODO Make these files available on the local file system
     // You may need to update the file paths
     // const files = [
@@ -92,7 +96,7 @@ const App = () => {
           parts: [
             {
               fileData: {
-                // mimeType: "image/jpg",
+                mimeType: "image/jpg",
                 fileUri: 'https://sallysbakingaddiction.com/wp-content/uploads/2013/04/triple-chocolate-cake-4.jpg',
               },
             },
