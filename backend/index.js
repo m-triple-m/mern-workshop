@@ -4,10 +4,9 @@ const { GoogleAIFileManager } = require("@google/generative-ai/server");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fileManager = new GoogleAIFileManager(process.env.API_KEY);
 
-const express = require('express');
+const express = require("express");
 const multer = require("multer");
 const cors = require('cors');
-
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -21,7 +20,7 @@ const storage = multer.diskStorage({
 const myStorage = multer({ storage: storage });
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 
@@ -73,5 +72,5 @@ app.post("/uploadfile", myStorage.single("myfile"), (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`server started`);
 });
