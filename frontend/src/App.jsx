@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import {
   GoogleGenerativeAI, HarmCategory,
   HarmBlockThreshold
@@ -7,43 +8,57 @@ const genAI = new GoogleGenerativeAI(
   import.meta.env.VITE_GOOGLE_API_KEY,
 );
 
-const exMarkdown = `The baked good in the top right corner of the image is **naan**.  It's a leavened, oven-baked flatbread popular in many parts of Asia, especially in Indian, Pakistani, and Afghani cuisines.
+const exMarkdown = `The image shows Palak Paneer, a popular North Indian dish of spinach and Indian cheese (paneer).
 
-Here's a recipe for making naan at home:
 
 **Ingredients:**
 
-* 1 cup warm water (105-115°F)
-* 2 teaspoons active dry yeast
-* 1 teaspoon sugar
-* 2 tablespoons plain yogurt
-* 1 large egg, lightly beaten
-* 4 cups all-purpose flour, plus more for dusting
-* 1 teaspoon salt
-* 2 tablespoons melted butter or ghee (clarified butter)
-* Optional: 1/4 cup chopped fresh cilantro or garlic
+* **For the Palak Puree:**
+    * 1 pound fresh spinach, washed and chopped roughly
+    * 1-2 green chilies, slit (optional, for heat)
+    * 1/2 inch ginger, peeled and chopped
+    * 2 cloves garlic, peeled
+    * 1/4 cup water
+* **For the Palak Paneer:**
+    * 2 tablespoons oil or ghee
+    * 1 medium onion, finely chopped
+    * 1 teaspoon ginger-garlic paste
+    * 1 teaspoon cumin seeds
+    * 1/2 teaspoon turmeric powder
+    * 1/2 teaspoon coriander powder
+    * 1/4 teaspoon red chili powder (or to taste)
+    * 1/4 teaspoon garam masala
+    * 1/2 cup chopped tomatoes
+    * Salt to taste
+    * 1 cup water or as needed
+    * 8 ounces paneer, cubed 
+    * 1 tablespoon heavy cream or cashew cream (optional)
+    * Fresh cilantro, chopped (for garnish)
 
 
 **Instructions:**
 
-1. **Activate Yeast:** In a large bowl, combine warm water, yeast, and sugar. Let stand for 5-10 minutes until foamy.
-2. **Combine Wet Ingredients:** Add yogurt and beaten egg to the yeast mixture. Whisk to combine.
-3. **Add Dry Ingredients:**  In a separate bowl, whisk together flour and salt. Gradually add the dry ingredients to the wet ingredients, mixing with a wooden spoon or your hands until a shaggy dough forms.
-4. **Knead Dough:** Turn the dough out onto a lightly floured surface and knead for 5-7 minutes until smooth and elastic.  If the dough is too sticky, add more flour a tablespoon at a time.
-5. **First Rise:** Place the dough in a lightly oiled bowl, turning to coat. Cover with plastic wrap and let rise in a warm place for 1-1.5 hours, or until doubled in size.
-6. **Divide and Shape:** Punch down the dough and divide it into 6-8 equal pieces. Roll each piece into an oval or teardrop shape, about 1/8 inch thick.  If using cilantro or garlic, sprinkle it over the dough before rolling.
-7. **Cook Naan:**  Heat a large cast-iron skillet or griddle over medium-high heat. You can also use a large frying pan.  Cook each naan for 2-3 minutes per side, or until lightly browned and puffed up. Brush with melted butter or ghee while still warm.
-8. **Serve:** Serve immediately with your favorite Indian dishes, like the Saag Paneer pictured!
-
-**Tips for Success:**
-
-* **Warm Water is Key:** Make sure your water is the correct temperature to activate the yeast. Too hot and it will kill the yeast, too cold and it won't activate properly.
-* **Don't Overknead:** Overkneading can result in tough naan.
-* **High Heat:** Cooking naan over high heat helps it puff up and gives it those characteristic charred spots.
-* **Butter/Ghee:**  Brushing with melted butter or ghee adds flavor and keeps the naan soft.
+1. **Blanch the Spinach:** Bring a pot of water to a boil. Add the spinach, green chilies (if using), ginger, and garlic. Blanch for 2-3 minutes, or until the spinach wilts. Drain immediately and transfer to a bowl of ice water to stop cooking.
+2. **Make Spinach Puree:**  Drain the spinach mixture well and blend it with 1/4 cup of water into a smooth puree. Set aside.
+3. **Sauté Aromatics:** Heat the oil/ghee in a large pan or pot over medium heat. Add cumin seeds and let them splutter. Add the chopped onions and sauté until golden brown.
+4. **Add Spices:** Stir in the ginger-garlic paste and sauté for 30 seconds. Add turmeric powder, coriander powder, red chili powder, and garam masala. Sauté for another 30 seconds until fragrant. 
+5. **Add Tomatoes:** Add the chopped tomatoes and salt. Cook until the tomatoes soften, about 5-7 minutes.
+6. **Add Spinach Puree:** Pour in the spinach puree and 1 cup of water. Bring to a simmer and cook for 5-7 minutes, allowing the flavors to meld. Adjust the consistency with more water if needed.
+7. **Add Paneer:** Gently add the paneer cubes to the gravy. Simmer for 2-3 minutes, being careful not to overcook the paneer.
+8. **Finish:** Stir in the heavy cream/cashew cream (if using). Garnish with fresh cilantro.
+9. **Serve:** Serve hot with roti, naan, paratha, or rice.
 
 
-Enjoy your homemade naan!`
+
+**Tips and Variations:**
+
+* **Paneer:** You can lightly pan-fry the paneer cubes before adding them to the gravy for a slightly different texture.
+* **Spice Level:** Adjust the amount of green chilies and red chili powder to your preference.
+* **Cream:**  Adding cream is optional but gives the dish a richer flavor and texture. Cashew cream can be used for a vegan alternative.
+* **Other Vegetables:** You can add other vegetables like green peas or potatoes to this dish.
+
+
+Enjoy your homemade Palak Paneer! `
 
 // import { GoogleAIFileManager } from "@google/generative-ai/server";
 // const fileManager = new GoogleAIFileManager(import.meta.env.VITE_GOOGLE_API_KEY);
@@ -54,7 +69,7 @@ const App = () => {
 
   const [topic, setTopic] = useState('');
   const [promptResponses, setpromptResponses] = useState([]);
-  const [markdownResponse, setMarkdownResponse] = useState([]);
+  const [markdownResponse, setMarkdownResponse] = useState(exMarkdown);
   const [imageData, setImageData] = useState(null);
 
 
@@ -142,7 +157,7 @@ const App = () => {
                 fileUri: uri,
               },
             },
-            { text: "Accurately identify the baked good in the image and provide an appropriate recipe consistent with your analysis. " },
+            { text: "Accurately identify the food in the image and provide an appropriate recipe consistent with your analysis. " },
           ],
         },
       ],
@@ -155,7 +170,7 @@ const App = () => {
 
   return (
     <div className='h-screen'>
-      <div className='h-[50vh] flex '>
+      <div className='h-[50vh] flex flex-col justify-center max-w-[80%] mx-auto'>
         <h1 className='text-2xl font-bold'>PPT Generator</h1>
         <input type="file" onChange={uploadFile} />
         <input value={topic} onChange={e => setTopic(e.target.value)} type="text" className='my-5 px-3 py-1 border border-gray-300 rounded-md w-full'
@@ -165,8 +180,12 @@ const App = () => {
 
         <button className='bg-black text-white block w-100 rounded-md p-3 mt-4' onClick={run}>Generate Presentation</button>
       </div>
-      <div>
-
+      <div className='max-w-[80%] mx-auto'>
+        {
+          markdownResponse && (
+            <MarkdownPreview source={markdownResponse} style={{ padding: 16 }} />
+          )
+        }
       </div>
     </div>
   )
