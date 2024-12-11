@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.use(express.static('./uploads'))
+
 app.post("/uploadfile", myStorage.single("myfile"), (req, res) => {
     // res.status(200).json({ status: "success" });
     console.log(req.file);
@@ -48,7 +50,7 @@ app.post("/uploadfile", myStorage.single("myfile"), (req, res) => {
         const genAI = new GoogleGenerativeAI(process.env.API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         console.log(uploadResult);
-        return res.status(200).json(uploadResult);
+        return res.status(200).json({ ...uploadResult, url:'https://mern-workshop.onrender.com/'+req.file.originalname});
         // model.generateContent([
         //     "Tell me about this image.",
         //     {
